@@ -1,0 +1,12 @@
+package main
+
+// aplikasi CRUD sederhana
+// akan membuat aplikasi sederhana dengan implementasi CRUD dengan metode restful api
+// akan membuat aplkasi CRUD untuk data cetgory yang memiliki atribut id (number) dan name (string)
+// akan membuat API untuk operasi create, read (get dan list), update dan delete data category
+// semua API akan kita tambahkan authentication berupa API-key
+
+// driver yang kita gunakan
+// mysql : go get -u github.com/go-sql-driver/mysql
+// http router :  go get github.com/julienschmidt/httprouter
+// validation : go get github.com/go-playground/validator/v10
