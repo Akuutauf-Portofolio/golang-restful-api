@@ -10,3 +10,4 @@ package main
 // mysql : go get -u github.com/go-sql-driver/mysql
 // http router :  go get github.com/julienschmidt/httprouter
 // validation : go get github.com/go-playground/validator/v10
+// install tool stub method : go install -v github.com/josharian/impl@v1.4.0

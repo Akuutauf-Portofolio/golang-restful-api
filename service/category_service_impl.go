@@ -7,6 +7,8 @@ import (
 	"belajar-go-lang-restful-api/repository"
 	"context"
 	"database/sql"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type CategoryServiceImpl struct {
@@ -16,12 +18,23 @@ type CategoryServiceImpl struct {
 	// butuh koneksi database juga, maka tambahkan attribute sql
 	// db bentuknya adalah struct bukan interface, maka di set sebagai pointer
 	DB *sql.DB
+
+	// menambahkan attribute validate
+	// validate ditambahkan di function create dan update
+	// di function yang lain tidak dibutuhkan validasi, karena tidak ada payload (data asli) di parameter nya
+	Validate *validator.Validate 
 }
 
 // mengimplementasi category service (membuat method yang ada di category  agar dimiliki oleh CategoryServiceImpl)
 // karena database yang kita gunakan adalah transactional (mysql), maka requestnya nanti dalam bentuk transactonal
 
 func(service CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
+	// mengimplementasi validation sebelum melakukan transaction
+	errorValidation := service.Validate.Struct(request)
+
+	// mengecek error
+	helper.PanicIfError(errorValidation)
+
 	// memulai koneksi database transactional
 	tx, err := service.DB.Begin()
 
@@ -46,6 +59,11 @@ func(service CategoryServiceImpl) Create(ctx context.Context, request web.Catego
 }
 
 func(service CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
+	// mengimplementasi validation sebelum melakukan transaction
+	errorValidation := service.Validate.Struct(request)
+
+	// mengecek error
+	helper.PanicIfError(errorValidation)
 	// memulai koneksi database transactional
 	tx, err := service.DB.Begin()
 
