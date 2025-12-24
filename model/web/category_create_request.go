@@ -5,5 +5,5 @@ package web
 // proses validasi dibutuhkan pada saat create
 
 type CategoryCreateRequest struct {
-	Name string `validate:"required,max:200,min:1"`
+	Name string `validate:"required,min=1,max=200" json:"name"`
 }

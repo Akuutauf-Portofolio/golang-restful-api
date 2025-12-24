@@ -17,6 +17,16 @@ type CategoryControllerImpl struct {
 	CategoryService service.CategoryService
 }
 
+// menambahkan function untuk kebutuhan endpoint (bukan method milik CategoryController)
+
+// membuat untuk router dengan return CategoryController (interface)
+func NewCategoryController(categoryService service.CategoryService) CategoryController {
+	// melakukan return dengan ponter
+	return &CategoryControllerImpl{
+		CategoryService: categoryService,
+	}
+}
+
 // ini adalah kontrak untuk category controller
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// membuat request create baru

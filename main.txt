@@ -11,3 +11,7 @@ package main
 // http router :  go get github.com/julienschmidt/httprouter
 // validation : go get github.com/go-playground/validator/v10
 // install tool stub method : go install -v github.com/josharian/impl@v1.4.0
+
+// Error
+// biasanya error invalid connection : 2025/12/24 09:20:08 http: panic serving 127.0.0.1:63177: invalid connection
+goroutine 23 [running]: . Disebabkan ada proses yang tidak selesai (tidak ditutup). contoh rows

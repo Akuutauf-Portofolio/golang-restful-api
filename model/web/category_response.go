@@ -4,6 +4,6 @@ package web
 // tidak terekspose semua
 // juga mengikuti apispec yang sudah dibuat sebelumnya
 type CategoryResponse struct {
-	Id int
-	Name string
+	Id int `json:"id"`
+	Name string `json:"name"`
 }

@@ -21,7 +21,7 @@ func ReadFromRequestBody(request *http.Request, result interface{}) {
 
 // membuat function untuk menulis ke Response body
 func WriteToResponseBody(writer http.ResponseWriter, response interface{}) {
-	// karena data yang dikirim nanti dalam bentuk json, maka perlun tambahakan header berikut pada writer
+	// karena data yang dikirim nanti dalam bentuk json, maka perlu tambahakan header berikut pada writer
 	writer.Header().Add("Content-Type", "application/json") // untuk memberi tahu bahwa data yang dikirim berbentuk json
 
 	// mengirim web  dengan mengkonversi ke json kemudian dikirim ke writer

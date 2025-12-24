@@ -15,6 +15,11 @@ type CategoryRepositoryImpl struct {
 
 }
 
+// mendefinisikan constructor
+func NewCategoryRepository() CategoryRepository {
+	return &CategoryRepositoryImpl{}
+}
+
 // membuat method milik struct CategoryRepositoryImpl yang mana menerapkan kontrak sebelumnya
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	// membuat  insert
@@ -45,7 +50,7 @@ func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx
 	// mengeksekusi query
 	// menggunakan ExecContext, karena data category di manipulasi
 	// result di skip, karena tidak perlu menampilkan datanya
-	_, err := tx.ExecContext(ctx, sql, category.Id)
+	_, err := tx.ExecContext(ctx, sql, category.Name, category.Id)
 
 	// mengecek error
 	helper.PanicIfError(err)
@@ -76,6 +81,9 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 	// mengecek error
 	helper.PanicIfError(err)
 
+	// jangan lupa menutup rows, setelah perulangan selesai dilakukan, dengan defer
+	defer rows.Close()
+
 	// membuat data category kosong
 	category := domain.Category{}
 
@@ -104,6 +112,9 @@ func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.T
 
 	// mengecek error
 	helper.PanicIfError(err)
+
+	// jangan lupa menutup rows, setelah perulangan selesai dilakukan, dengan defer
+	defer rows.Close()
 
 	// membuat data category kosong
 	var categories []domain.Category

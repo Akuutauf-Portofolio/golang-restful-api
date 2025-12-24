@@ -1,6 +1,7 @@
 package service
 
 import (
+	"belajar-go-lang-restful-api/exception"
 	"belajar-go-lang-restful-api/helper"
 	"belajar-go-lang-restful-api/model/domain"
 	"belajar-go-lang-restful-api/model/web"
@@ -23,6 +24,17 @@ type CategoryServiceImpl struct {
 	// validate ditambahkan di function create dan update
 	// di function yang lain tidak dibutuhkan validasi, karena tidak ada payload (data asli) di parameter nya
 	Validate *validator.Validate 
+}
+
+// mendefinisikan construktor dari controller
+
+// membuat untuk router dengan return CategoryService (interface)
+func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) CategoryService {
+	return &CategoryServiceImpl{
+		CategoryRepository: categoryRepository,
+		DB: DB,
+		Validate: validate,
+	}
 }
 
 // mengimplementasi category service (membuat method yang ada di category  agar dimiliki oleh CategoryServiceImpl)
@@ -64,6 +76,7 @@ func(service CategoryServiceImpl) Update(ctx context.Context, request web.Catego
 
 	// mengecek error
 	helper.PanicIfError(errorValidation)
+	
 	// memulai koneksi database transactional
 	tx, err := service.DB.Begin()
 
@@ -75,6 +88,11 @@ func(service CategoryServiceImpl) Update(ctx context.Context, request web.Catego
 
 	// melakukan pencarian data category terlebih dahulu sebelum dilakukan  dengan function FindById
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
+
+	// melakukan pengecekan ketika data category tidak ditemukan
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	// mengecek error
 	helper.PanicIfError(err)
@@ -104,6 +122,11 @@ func(service CategoryServiceImpl) Delete(ctx context.Context, categoryId int) {
 	// melakukan pencarian data category terlebih dahulu sebelum dilakukan  dengan function FindById
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 
+	// melakukan pengecekan ketika data category tidak ditemukan
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
 	// mengecek error
 	helper.PanicIfError(err)
 
@@ -125,6 +148,11 @@ func(service CategoryServiceImpl) FindById(ctx context.Context, categoryId int) 
 
 	// melakukan pencarian data category terlebih dahulu sebelum dilakukan  dengan function FindById
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
+
+	// melakukan pengecekan ketika data category tidak ditemukan
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	// mengecek error
 	helper.PanicIfError(err)

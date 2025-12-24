@@ -7,6 +7,6 @@ package web
 
 type CategoryUpdateRequest struct {
 	// meskipun secara tidak langsung data yang diubah adalah name saja, namun id tetap diperlukan
-	Id int `validate:"required"`
-	Name string `validate:"required,max:200,min:1"`
+	Id int `validate:"required" json:"id"`
+	Name string `validate:"required,min=1,max=200" json:"name"`
 }
