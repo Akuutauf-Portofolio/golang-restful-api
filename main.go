@@ -3,7 +3,6 @@ package main
 import (
 	"belajar-go-lang-restful-api/app"
 	"belajar-go-lang-restful-api/controller"
-	"belajar-go-lang-restful-api/exception"
 	"belajar-go-lang-restful-api/helper"
 	"belajar-go-lang-restful-api/middleware"
 	"belajar-go-lang-restful-api/repository"
@@ -11,12 +10,11 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/julienschmidt/httprouter"
 )
 
 // mendefinisikan main program
 func main() {
-	// membuat koneksi databse bar
+	// membuat koneksi databse baru
 	db := app.NewDB()
 
 	// membuat validator
@@ -31,19 +29,8 @@ func main() {
 	// membuat category controller
 	categoryController := controller.NewCategoryController(categoryService)
 	
-	// mengimplementasikan router
-	router := httprouter.New()
-
-	// membuat endpoint
-	router.GET("/api/categories", categoryController.FindAll)
-	router.GET("/api/categories/:categoryId", categoryController.FindById)
-	router.POST("/api/categories", categoryController.Create)
-	router.PUT("/api/categories/:categoryId", categoryController.Update)
-	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
-
-	// membuat panic handler, agar ketika error si pengguna juga mendapatkan respon error,-
-	// contoh error seperti error validasi, error not found dan lain lain
-	router.PanicHandler = exception.ErrorHandler
+	// implementasi router
+	router := app.NewRouter(categoryController)
 
 	// membuat server
 	server := http.Server{

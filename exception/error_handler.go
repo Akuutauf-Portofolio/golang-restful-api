@@ -44,7 +44,7 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 		// membuat web response
 		webResponse := web.WebReponse{
 			Code: http.StatusNotFound,
-			Status: "NOT FOUND ERROR",
+			Status: "NOT FOUND",
 			Data: exception.Error,
 		}
 
@@ -68,11 +68,11 @@ func validationError(writer http.ResponseWriter, request *http.Request, err inte
 	if ok {
 		// mengubah data respon ke client
 		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(http.StatusNotFound) // memberikan code error 404
+		writer.WriteHeader(http.StatusBadRequest) // memberikan code error 404
 
 		// membuat web response
 		webResponse := web.WebReponse{
-			Code: http.StatusNotFound,
+			Code: http.StatusBadRequest,
 			Status: "BAD REQUEST",
 			Data: exception.Error(),
 		}
